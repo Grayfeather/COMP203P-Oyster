@@ -14,11 +14,11 @@ public class Example {
         TravelTracker travelTracker = new TravelTracker();
         travelTracker.connect(paddingtonReader, bakerStreetReader, kingsCrossReader);
         paddingtonReader.touch(myCard);
-        minutesPass(0);
+        minutesPass(1);
         bakerStreetReader.touch(myCard);
-        minutesPass(0);
+        minutesPass(1);
         bakerStreetReader.touch(myCard);
-        minutesPass(0);
+        minutesPass(1);
         kingsCrossReader.touch(myCard);
         travelTracker.chargeAccounts();
     }
