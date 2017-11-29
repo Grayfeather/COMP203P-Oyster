@@ -31,6 +31,10 @@ public class JourneyTest {
 
     @Test
     //public Date startTime() { return new Date(start.time()); }
-
     public void returnsStartTime() { assertThat(test.startTime(), is(new Date(testStart.time())));}
+
+    @Test
+    //public Date endTime() { return new Date(end.time()); }
+    public void returnsEndTime() { assertThat(test.endTime(), is(new Date(testEnd.time())));}
+
 }
