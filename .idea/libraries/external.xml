@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="external">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../COMP203P-Coursework/Oyster/lib/external.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
