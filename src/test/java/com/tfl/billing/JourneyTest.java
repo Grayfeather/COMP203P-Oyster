@@ -2,6 +2,7 @@ package com.tfl.billing;
 
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -27,4 +28,9 @@ public class JourneyTest {
     public void returnsDestinationId() {
         assertThat(test.destinationId(), is(testEnd.readerId()));
     }
+
+    @Test
+    //public Date startTime() { return new Date(start.time()); }
+
+    public void returnsStartTime() { assertThat(test.startTime(), is(new Date(testStart.time())));}
 }

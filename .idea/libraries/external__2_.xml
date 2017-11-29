@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="external">
+  <library name="external (2)">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/external.jar!/" />
+      <root url="jar://$PROJECT_DIR$/external.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
