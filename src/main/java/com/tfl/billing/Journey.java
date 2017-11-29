@@ -14,9 +14,7 @@ public class Journey {
         this.end = end;
     }
 
-    public UUID originId() {
-        return start.readerId();
-    }
+    public UUID originId() { return start.readerId(); }
 
     public UUID destinationId() {
         return end.readerId();
