@@ -1,14 +1,9 @@
 package com.tfl.billing;
 
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Test;
-import sun.rmi.runtime.Log;
 
 import java.util.Date;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -62,13 +57,17 @@ public class JourneyTest {
     }
 
     @Test
-    public void returnsDurationMinutes () { // needs improvement
+    public void returnsDurationMinutes () {
         String minutes = test.durationMinutes();
         int sep = minutes.indexOf(':');
         int mins = 0;
-        if(sep == 1) mins = minutes.charAt(0) - '0';
+        for(int i = 0; i < sep; i ++) {
+            mins = mins * 10 + (minutes.charAt(i) - '0');
+        }
         int secs = 0;
-        if(sep == 1) secs = minutes.charAt(2) - '0';
+        for(int i = sep + 1; i < test.durationMinutes().length(); i ++) {
+            secs = secs * 10 + minutes.charAt(i) - '0';
+        }
         assertThat(mins * 60 + secs, is(test.durationSeconds()));
     }
 
