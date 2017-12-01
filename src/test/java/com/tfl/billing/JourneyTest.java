@@ -40,7 +40,6 @@ public class JourneyTest {
     }
 
     @Test
-    //public Date startTime() { return new Date(start.time()); }
     public void returnsDateStart() {
         assertThat(test.startTime() instanceof Date, is(true));
     }
