@@ -20,9 +20,7 @@ public class Journey {
         return end.readerId();
     }
 
-    public String formattedStartTime() {
-        return format(start.time());
-    }
+    public String formattedStartTime() { return format(start.time()); }
 
     public String formattedEndTime() {
         return format(end.time());
