@@ -1,7 +1,6 @@
 package com.tfl.billing;
 
 import org.junit.Test;
-import java.util.Date;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -15,7 +14,6 @@ public class JourneyEventTest {
 
     @Test
     public void returnsCorrectTime() {
-        long testTime = test.time();
         assertThat(test.time() <= System.currentTimeMillis(), is(true));
     }
 
