@@ -8,15 +8,26 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class JourneyEventTest {
-    private JourneyEvent test = new JourneyEvent(UUID.randomUUID(), UUID.randomUUID()) {};
+
+    private final UUID testCardId = UUID.randomUUID();
+    private final UUID testReaderId = UUID.randomUUID();
+    private JourneyEvent test = new JourneyEvent(testCardId, testReaderId) {};
 
     @Test
-    public void longToDateTime() {
+    public void returnsCorrectTime() {
         long testTime = test.time();
-        Date date = new Date(testTime);
         assertThat(test.time() <= System.currentTimeMillis(), is(true));
     }
 
+    @Test
+    public void returnsCardId() {
+        assertThat(test.cardId(), is(testCardId));
+    }
+
+    @Test
+    public void returnsReaderId() {
+        assertThat(test.readerId(), is(testReaderId));
+    }
     /*
     String testTimeString = String.valueOf(testTime); //from long to string
     String pattern = "yyyy-MM-dd";
