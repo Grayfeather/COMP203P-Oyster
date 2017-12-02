@@ -2,18 +2,19 @@ package com.tfl.billing;
 
 import org.junit.Test;
 import java.util.Date;
+import java.util.UUID;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class JourneyEventTest {
-
-    private JourneyEvent test;
+    private JourneyEvent test = new JourneyEvent(UUID.randomUUID(), UUID.randomUUID()) {};
 
     @Test
     public void longToDateTime() {
         long testTime = test.time();
-        Date date = new Date(testTime); //from long to date
-        assertThat(test.time(), is(date.getTime()));
+        Date date = new Date(testTime);
+        assertThat(test.time() <= System.currentTimeMillis(), is(true));
     }
 
     /*
