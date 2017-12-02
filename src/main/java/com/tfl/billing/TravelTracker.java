@@ -14,12 +14,18 @@ public class TravelTracker implements ScanListener {
     static final BigDecimal PEAK_JOURNEY_PRICE = new BigDecimal(3.20);
 
     private final List<JourneyEvent> eventLog = new ArrayList<JourneyEvent>();
-    private final Set<UUID> currentlyTravelling = new HashSet<UUID>();
+    private final Set<UUID> currentlyTravelling = new HashSet<UUID>(); //data structure much like RecentlyUsedList
 
-    public void chargeAccounts() {
-        CustomerDatabase customerDatabase = CustomerDatabase.getInstance();
+    private CustomerDatabase customerDatabase;
+    private List<Customer> customers;
 
-        List<Customer> customers = customerDatabase.getCustomers();
+    public List<Customer> importDatabase() {
+        customerDatabase = CustomerDatabase.getInstance();
+        customers = customerDatabase.getCustomers();
+        return customers;
+    }
+
+    public void chargeAccounts(List<Customer> customers) {
         for (Customer customer : customers) {
             totalJourneysFor(customer);
         }
