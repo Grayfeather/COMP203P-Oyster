@@ -65,7 +65,7 @@ public class JourneyTest {
         }
         int secs = 0;
         for(int i = sep + 1; i < test.durationMinutes().length(); i ++) {
-            secs = secs * 10 + minutes.charAt(i) - '0';
+            secs = secs * 10 + (minutes.charAt(i) - '0');
         }
         assertThat(mins * 60 + secs, is(test.durationSeconds()));
     }
