@@ -19,13 +19,14 @@ public class TravelTracker implements ScanListener {
     private CustomerDatabase customerDatabase;
     private List<Customer> customers;
 
-    public List<Customer> importDatabase() {
+
+    private void importDatabase() {
         customerDatabase = CustomerDatabase.getInstance();
         customers = customerDatabase.getCustomers();
-        return customers;
     }
 
-    public void chargeAccounts(List<Customer> customers) {
+    public void chargeAccounts() {
+        importDatabase();
         for (Customer customer : customers) {
             totalJourneysFor(customer);
         }
@@ -61,7 +62,9 @@ public class TravelTracker implements ScanListener {
             customerTotal = customerTotal.add(journeyPrice);
         }
 
-        PaymentsSystem.getInstance().charge(customer, journeys, roundToNearestPenny(customerTotal));
+        if(customerTotal.compareTo(BigDecimal.valueOf(0)) == 1) {
+            PaymentsSystem.getInstance().charge(customer, journeys, roundToNearestPenny(customerTotal));
+        }
     }
 
     private BigDecimal roundToNearestPenny(BigDecimal poundsAndPence) {
