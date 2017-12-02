@@ -11,52 +11,67 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class JourneyTest {
 
 
-    private final UUID testCardIdStart = UUID.randomUUID();
-    private final UUID testReaderIdStart = UUID.randomUUID();
-    private final UUID testCardIdEnd = UUID.randomUUID();
-    private final UUID testReaderIdEnd = UUID.randomUUID();
-    private final JourneyEvent testStart = new JourneyStart(testCardIdStart, testReaderIdStart);
-    private final JourneyEvent testEnd = new JourneyEnd(testCardIdEnd, testReaderIdEnd);
-    private Journey test = new Journey(testStart, testEnd);
+    private UUID testCardIdStart = UUID.randomUUID();
+    private UUID testReaderIdStart = UUID.randomUUID();
+    private UUID testCardIdEnd = UUID.randomUUID();
+    private UUID testReaderIdEnd = UUID.randomUUID();
+    private JourneyStart testStart;
+    private JourneyEnd testEnd;
+    private Journey test;
+
+    private void createJourneyTest(int seconds) throws InterruptedException{
+        testStart  = new JourneyStart(testCardIdStart, testReaderIdStart);
+        Thread.sleep(seconds*1000);//wait x seconds after testStart ends and before testEnd starts
+        testEnd = new JourneyEnd(testCardIdEnd, testReaderIdEnd);
+        test = new Journey(testStart, testEnd);
+    }
 
     @Test
-    public void returnsOriginId() {
+    public void returnsOriginId() throws InterruptedException{
+        createJourneyTest(1);
         assertThat(test.originId(), is(testReaderIdStart));
     }
 
     @Test
-    public void returnsDestinationId() {
+    public void returnsDestinationId() throws InterruptedException{
+        createJourneyTest(1);
         assertThat(test.destinationId(), is(testReaderIdEnd));
     }
 
     @Test
-    public void returnsStringStart() {
+    public void returnsStringStart() throws InterruptedException{
+        createJourneyTest(1);
         assertThat(test.formattedStartTime() != null, is(true));
     }
 
     @Test
-    public void returnStringEnd() {
+    public void returnStringEnd() throws InterruptedException {
+        createJourneyTest(1);
         assertThat(test.formattedEndTime() != null, is(true));
     }
 
     @Test
-    public void returnsDateStart() {
+    public void returnsDateStart() throws InterruptedException {
+        createJourneyTest(1);
         assertThat(test.startTime() instanceof Date, is(true));
     }
 
     @Test
-    public void returnsDateEnd() {
+    public void returnsDateEnd() throws InterruptedException {
+        createJourneyTest(1);
         assertThat(test.endTime() instanceof Date, is(true));
     }
 
     @Test
-    public void returnsDurationSeconds () {
+    public void returnsDurationSeconds () throws InterruptedException {
+        createJourneyTest(1);
         int duration = (int) (testEnd.time() - testStart.time()) / 1000;
         assertThat(test.durationSeconds(), is(duration));
     }
 
     @Test
-    public void returnsDurationMinutes () {
+    public void returnsDurationMinutes () throws InterruptedException {
+        createJourneyTest(1);
         String minutes = test.durationMinutes();
         int sep = minutes.indexOf(':');
         int mins = 0;
@@ -70,4 +85,11 @@ public class JourneyTest {
         assertThat(mins * 60 + secs, is(test.durationSeconds()));
     }
 
+    @Test
+    public void testThatStartTimeIsBeforeEndTime() throws InterruptedException {
+        createJourneyTest(1);
+        Date startTime = test.startTime();
+        Date endTime = test.endTime();
+        assertThat(startTime.before(endTime), is(true));
+    }
 }

@@ -11,7 +11,7 @@ public abstract class JourneyEvent {
     public JourneyEvent(UUID cardId, UUID readerId) {
         this.cardId = cardId;
         this.readerId = readerId;
-        this.time = System.currentTimeMillis();
+        this.time = System.currentTimeMillis(); //present-1/01/1970 in millis
     }
 
     public UUID cardId() {
