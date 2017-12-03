@@ -20,3 +20,5 @@ Initial unit testing: Tested Journey and JourneyEvent. (public returning methods
 **Cap peak**: 9.00
 
 **Cap off-peak**: 7.00
+
+**Peak**: between 6 and 9 or 17 and 19
