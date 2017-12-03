@@ -5,10 +5,12 @@ import com.oyster.ScanListener;
 import com.tfl.external.Customer;
 import com.tfl.external.CustomerDatabase;
 import com.tfl.external.PaymentsSystem;
-import com.tfl.billing.JourneyTypePrices;
 
 import java.math.BigDecimal;
 import java.util.*;
+
+import static com.tfl.billing.JourneyTypePrices.*;
+
 
 public class TravelTracker implements ScanListener {
 
@@ -53,10 +55,18 @@ public class TravelTracker implements ScanListener {
         }
 
         BigDecimal customerTotal = new BigDecimal(0);
+        BigDecimal journeyPrice = new BigDecimal(0);
+        JourneyTypePrices myJourney = new JourneyTypePrices();
         for (Journey journey : journeys) {
-            BigDecimal journeyPrice = OFF_PEAK_JOURNEY_PRICE;
-            if (peak(journey)) {
-                journeyPrice = PEAK_JOURNEY_PRICE;
+            if(myJourney.isPeakJourney(journey)){
+                if(myJourney.isLongJourney(journey))
+                    journeyPrice = PEAK_LONG_JOURNEY_PRICE;
+                    journeyPrice = PEAK_SHORT_JOURNEY_PRICE;
+            }
+            else if(!myJourney.isPeakJourney(journey)){
+                if(myJourney.isLongJourney(journey))
+                    journeyPrice = OFF_PEAK_LONG_JOURNEY_PRICE;
+                    journeyPrice = OFF_PEAK_SHORT_JOURNEY_PRICE;
             }
             customerTotal = customerTotal.add(journeyPrice);
         }

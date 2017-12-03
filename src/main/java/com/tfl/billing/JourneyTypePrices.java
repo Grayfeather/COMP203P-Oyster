@@ -20,7 +20,7 @@ public class JourneyTypePrices {
         return false;
     }
 
-    private boolean peak(Date time) {
+    public boolean peak(Date time) {
         return false;
     }
 
