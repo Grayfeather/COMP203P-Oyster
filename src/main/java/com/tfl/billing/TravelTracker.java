@@ -9,8 +9,6 @@ import com.tfl.external.PaymentsSystem;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static com.tfl.billing.JourneyTypePrices.*;
-
 
 public class TravelTracker implements ScanListener {
 
@@ -26,14 +24,18 @@ public class TravelTracker implements ScanListener {
         customers = customerDatabase.getCustomers();
     }
 
-    public void chargeAccounts() { // will only charge customers who actually travelled
+    /*add journeyEvent in list customerJourneyEvents for each customer and calculate the total price (for each customer)
+    of the journey in customerTotal*/
+    public void chargeAccounts() {
         importDatabase();
         for (Customer customer : customers) {
             totalJourneysFor(customer);
         }
     }
 
+
     private void totalJourneysFor(Customer customer) {
+        //add journeyEvent in list customerJourneyEvents for a customer
         List<JourneyEvent> customerJourneyEvents = new ArrayList<JourneyEvent>();
         for (JourneyEvent journeyEvent : eventLog) {
             if (journeyEvent.cardId().equals(customer.cardId())) {
@@ -41,8 +43,8 @@ public class TravelTracker implements ScanListener {
             }
         }
 
+        //creates a journey for each successful pair of events
         List<Journey> journeys = new ArrayList<Journey>();
-
         JourneyEvent start = null;
         for (JourneyEvent event : customerJourneyEvents) {
             if (event instanceof JourneyStart) {
@@ -54,30 +56,30 @@ public class TravelTracker implements ScanListener {
             }
         }
 
+        JourneyTypePrices priceCalculator = new JourneyTypePrices();
         BigDecimal customerTotal = new BigDecimal(0);
-        BigDecimal journeyPrice = new BigDecimal(0);
-        JourneyTypePrices myJourney = new JourneyTypePrices(); //redundant, JourneyTypePrices.getInstance()
-        for (Journey journey : journeys) {
-            if(myJourney.isPeakJourney(journey)){
-                if(myJourney.isLongJourney(journey))
-                    journeyPrice = PEAK_LONG_JOURNEY_PRICE;
-                else
-                    journeyPrice = PEAK_SHORT_JOURNEY_PRICE;
+        boolean peak = false;
+        customerTotal = customerTotal.add(priceCalculator.calculateJourneyPrice());
+
+        for (Journey i : journeys){
+            if(priceCalculator.isPeakJourney(i) == true){
+                peak = true;
             }
-            else if(!myJourney.isPeakJourney(journey)){
-                if(myJourney.isLongJourney(journey))
-                    journeyPrice = OFF_PEAK_LONG_JOURNEY_PRICE;
-                else
-                    journeyPrice = OFF_PEAK_SHORT_JOURNEY_PRICE;
-            }
-            customerTotal = customerTotal.add(journeyPrice);
+        }
+        if(customerTotal.compareTo(BigDecimal.valueOf(9)) >= 0 && peak == true) {
+            PaymentsSystem.getInstance().charge(customer, journeys, BigDecimal.valueOf(9));
         }
 
+        else if(customerTotal.compareTo(BigDecimal.valueOf(7)) >=0 && peak == false){
+            PaymentsSystem.getInstance().charge(customer, journeys, BigDecimal.valueOf(7));
+        }
 
-        if(customerTotal.compareTo(BigDecimal.valueOf(0)) == 1) {
+        else if(customerTotal.compareTo(BigDecimal.valueOf(0)) == 1) {
             PaymentsSystem.getInstance().charge(customer, journeys, roundToNearestPenny(customerTotal));
         }
     }
+
+
 
     private BigDecimal roundToNearestPenny(BigDecimal poundsAndPence) {
         return poundsAndPence.setScale(2, BigDecimal.ROUND_HALF_UP);
