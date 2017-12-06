@@ -1,6 +1,11 @@
 package com.tfl.billing;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -10,6 +15,7 @@ import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class JourneyTypePricesTest {
 
@@ -21,7 +27,7 @@ public class JourneyTypePricesTest {
     Instant startTime = Instant.parse("2017-12-03T08:30:00.00Z");
     Instant endTime = Instant.parse("2017-12-03T10:45:00.00Z");
 
-    private JourneyStart myJourneyStart = new JourneyStart(testCardIdStart, testReaderIdStart);
+    private JourneyStart myJourneyStart = mock(JourneyStart.class);
     private JourneyEnd myJourneyEnd = new JourneyEnd(testCardIdEnd, testReaderIdEnd);
     private Journey myJourney = new Journey(myJourneyStart, myJourneyEnd);
 
