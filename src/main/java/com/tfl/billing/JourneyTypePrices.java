@@ -4,7 +4,7 @@ package com.tfl.billing;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class JourneyTypePrices {
+public class JourneyTypePrices { //first phase of TDD
 
     static final BigDecimal OFF_PEAK_LONG_JOURNEY_PRICE = new BigDecimal(2.70);
     static final BigDecimal OFF_PEAK_SHORT_JOURNEY_PRICE = new BigDecimal(1.60);
@@ -17,7 +17,7 @@ public class JourneyTypePrices {
     }
 
     public boolean isPeakJourney(Journey myJourney) {
-        return false;
+        return true;
     }
 
     public boolean peak(Date time) {
@@ -25,15 +25,15 @@ public class JourneyTypePrices {
     }
 
     public boolean isLongJourney(Journey myJourney) {
-        return false;
+        return true;
     }
 
     public BigDecimal calculateJourneyPrice(Journey myJourney) {
-        return BigDecimal.valueOf(1);
+        return BigDecimal.valueOf(3.80);
     }
 
-   /* public BigDecimal calculateDailyCaps(Journey myJourney){
-
-    }*/
+    public BigDecimal calculateDailyCaps(BigDecimal total, boolean x) {
+        return BigDecimal.valueOf(7);
+    }
 
 }

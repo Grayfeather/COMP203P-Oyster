@@ -26,7 +26,7 @@ public class TravelTracker implements ScanListener {
         customers = customerDatabase.getCustomers();
     }
 
-    public void chargeAccounts() {
+    public void chargeAccounts() { // will only charge customers who actually travelled
         importDatabase();
         for (Customer customer : customers) {
             totalJourneysFor(customer);
@@ -56,20 +56,23 @@ public class TravelTracker implements ScanListener {
 
         BigDecimal customerTotal = new BigDecimal(0);
         BigDecimal journeyPrice = new BigDecimal(0);
-        JourneyTypePrices myJourney = new JourneyTypePrices();
+        JourneyTypePrices myJourney = new JourneyTypePrices(); //redundant, JourneyTypePrices.getInstance()
         for (Journey journey : journeys) {
             if(myJourney.isPeakJourney(journey)){
                 if(myJourney.isLongJourney(journey))
                     journeyPrice = PEAK_LONG_JOURNEY_PRICE;
+                else
                     journeyPrice = PEAK_SHORT_JOURNEY_PRICE;
             }
             else if(!myJourney.isPeakJourney(journey)){
                 if(myJourney.isLongJourney(journey))
                     journeyPrice = OFF_PEAK_LONG_JOURNEY_PRICE;
+                else
                     journeyPrice = OFF_PEAK_SHORT_JOURNEY_PRICE;
             }
             customerTotal = customerTotal.add(journeyPrice);
         }
+
 
         if(customerTotal.compareTo(BigDecimal.valueOf(0)) == 1) {
             PaymentsSystem.getInstance().charge(customer, journeys, roundToNearestPenny(customerTotal));
