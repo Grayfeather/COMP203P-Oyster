@@ -17,6 +17,11 @@ public class TravelTracker implements ScanListener {
 
     private CustomerDatabase customerDatabase;
     private List<Customer> customers;
+    private static TravelTracker instance = new TravelTracker();
+
+    public static TravelTracker getInstance() {
+        return instance;
+    }
 
 
     private void importDatabase() {
@@ -56,32 +61,28 @@ public class TravelTracker implements ScanListener {
             }
         }
 
-        JourneyTypePrices priceCalculator = new JourneyTypePrices();
-        BigDecimal customerTotal = new BigDecimal(0);
         boolean peak = false;
-        customerTotal = customerTotal.add(priceCalculator.calculateJourneyPrice());
+        BigDecimal customerTotal = new BigDecimal(0);
+        customerTotal = customerTotal.add(JourneyTypePrices.getInstance().calculateJourneyPrice(journeys));
 
-        for (Journey i : journeys){
-            if(priceCalculator.isPeakJourney(i) == true){
+        //if one of the journeys is true, peak becomes true.
+        for (Journey i : journeys) {
+            if(JourneyTypePrices.getInstance().isPeakJourney(i)){
                 peak = true;
             }
         }
-        if(customerTotal.compareTo(BigDecimal.valueOf(9)) >= 0 && peak == true) {
-            PaymentsSystem.getInstance().charge(customer, journeys, BigDecimal.valueOf(9));
-        }
-
-        else if(customerTotal.compareTo(BigDecimal.valueOf(7)) >=0 && peak == false){
-            PaymentsSystem.getInstance().charge(customer, journeys, BigDecimal.valueOf(7));
-        }
-
-        else if(customerTotal.compareTo(BigDecimal.valueOf(0)) == 1) {
+        if((customerTotal.compareTo(BigDecimal.valueOf(7)) == 1 && peak == false)
+                ||
+                (customerTotal.compareTo(BigDecimal.valueOf(9)) == 1 && peak == true)
+                ) {
+            PaymentsSystem.getInstance().charge(customer, journeys, roundToNearestPenny(JourneyTypePrices.getInstance().calculateDailyCaps(peak)));
+        } else {
             PaymentsSystem.getInstance().charge(customer, journeys, roundToNearestPenny(customerTotal));
         }
-    }
 
+}
 
-
-    private BigDecimal roundToNearestPenny(BigDecimal poundsAndPence) {
+    public BigDecimal roundToNearestPenny(BigDecimal poundsAndPence) {
         return poundsAndPence.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
@@ -106,4 +107,4 @@ public class TravelTracker implements ScanListener {
         }
     }
 
-}
+    }

@@ -4,12 +4,12 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import com.tfl.billing.JourneyTypePrices;
 
 public class JourneyTypePricesTest {
 
@@ -46,12 +46,14 @@ public class JourneyTypePricesTest {
         myJourneyStart.time = startTime.toEpochMilli();
         myJourneyEnd.time = endTime.toEpochMilli();
         myJourney = new Journey(myJourneyStart, myJourneyEnd);
-        assertThat(JourneyTypePrices.getInstance().calculateJourneyPrice(myJourney), is(BigDecimal.valueOf(3.80)));
+        List<Journey> myJourneys = new ArrayList<>();
+        myJourneys.add(myJourney);
+        assertThat(JourneyTypePrices.getInstance().calculateJourneyPrice(myJourneys), is(TravelTracker.getInstance().roundToNearestPenny(BigDecimal.valueOf(3.80))));
     }
 
     @Test
     public void testDailyCaps () {
         BigDecimal totalPrice = BigDecimal.valueOf(12);
-        assertThat(JourneyTypePrices.getInstance().calculateDailyCaps(totalPrice, false), is(BigDecimal.valueOf(7)));
+        assertThat(JourneyTypePrices.getInstance().calculateDailyCaps(false), is(BigDecimal.valueOf(7)));
     }
 }
