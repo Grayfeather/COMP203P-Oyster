@@ -35,8 +35,7 @@ public class TravelTrackerTest {
         OysterCardReader testPaddingtonReader = OysterReaderLocator.atStation(Station.PADDINGTON);
         OysterCardReader testBakerStreetReader = OysterReaderLocator.atStation(Station.BAKER_STREET);
         OysterCardReader testEustonSquareReader = OysterReaderLocator.atStation(Station.EUSTON_SQUARE);
-        TravelTracker testTravelTracker = new TravelTracker();
-        testTravelTracker.importMockDatabase(testCustomerDatabase);
+        TravelTracker testTravelTracker = new TravelTracker(testCustomerDatabase);
         testTravelTracker.connect(testPaddingtonReader, testBakerStreetReader, testEustonSquareReader);
         testPaddingtonReader.touch(mockNewCard);
         generateJourneyTime(5);
@@ -45,6 +44,6 @@ public class TravelTrackerTest {
         testBakerStreetReader.touch(mockNewCard);
         generateJourneyTime(5);
         testEustonSquareReader.touch(mockNewCard);
-        testTravelTracker.chargeAccounts(false);
+        testTravelTracker.chargeAccounts();
     }
 }

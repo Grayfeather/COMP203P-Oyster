@@ -1,6 +1,8 @@
 package com.tfl.billing;
 
 
+import com.tfl.external.CustomerDatabase;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,6 +41,7 @@ public class JourneyTypePrices {
     }
 
     public BigDecimal calculateJourneyPrice(List<Journey> journeys) {
+        TravelTracker travelTracker = new TravelTracker(CustomerDatabase.getInstance());
         BigDecimal journeyPrice = new BigDecimal(0);
         for (Journey journey : journeys) {
             if(isPeakJourney(journey)){
@@ -54,7 +57,7 @@ public class JourneyTypePrices {
                     journeyPrice = OFF_PEAK_SHORT_JOURNEY_PRICE;
             }
         }
-        return TravelTracker.getInstance().roundToNearestPenny(journeyPrice);
+        return travelTracker.roundToNearestPenny(journeyPrice);
     }
 
     public BigDecimal calculateDailyCaps(boolean peak) {

@@ -17,27 +17,16 @@ public class TravelTracker implements ScanListener {
 
     private CustomerDatabase customerDatabase;
     private List<Customer> customers;
-    private static TravelTracker instance = new TravelTracker();
-
-    public static TravelTracker getInstance() {
-        return instance;
+    public TravelTracker (CustomerDatabase customerDatabase){
+        this.customerDatabase = customerDatabase;
     }
 
 
-    private void importDatabase() {
-        customerDatabase = CustomerDatabase.getInstance();
-        customers = customerDatabase.getCustomers();
-    }
-
-    public void importMockDatabase(CustomerDatabase mock) {
-        customerDatabase = mock;
-        customers = customerDatabase.getCustomers();
-    }
 
     /*add journeyEvent in list customerJourneyEvents for each customer and calculate the total price (for each customer)
     of the journey in customerTotal*/
-    public void chargeAccounts(boolean k) {
-        if(k) importDatabase();
+    public void chargeAccounts() {
+        customers = customerDatabase.getCustomers();
         for (Customer customer : customers) {
            chargeCustomer(customer);
         }

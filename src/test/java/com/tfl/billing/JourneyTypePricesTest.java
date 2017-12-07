@@ -1,5 +1,6 @@
 package com.tfl.billing;
 
+import com.tfl.external.CustomerDatabase;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -38,13 +39,14 @@ public class JourneyTypePricesTest {
 
     @Test
     public void testJourneyCalculator() {
+        TravelTracker travelTracker = new TravelTracker(CustomerDatabase.getInstance());
         when(myJourney.startTime()).thenReturn(new Date(startTime.toEpochMilli()));
         when(myJourney.endTime()).thenReturn(new Date(endTime.toEpochMilli()));
         int testDuration = (int) ((endTime.toEpochMilli() - startTime.toEpochMilli()) / 1000);
         when(myJourney.durationSeconds()).thenReturn(testDuration);
         List<Journey> myJourneys = new ArrayList<>();
         myJourneys.add(myJourney);
-        assertThat(JourneyTypePrices.getInstance().calculateJourneyPrice(myJourneys), is(TravelTracker.getInstance().roundToNearestPenny(BigDecimal.valueOf(3.80))));
+        assertThat(JourneyTypePrices.getInstance().calculateJourneyPrice(myJourneys), is(travelTracker.roundToNearestPenny(BigDecimal.valueOf(3.80))));
     }
 
     @Test
