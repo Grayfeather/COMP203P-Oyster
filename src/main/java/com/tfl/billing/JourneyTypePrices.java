@@ -29,7 +29,7 @@ public class JourneyTypePrices {
         calendar.setTime(time);
         calendar.setTimeZone(TimeZone.getTimeZone("Europe/London"));
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        return (hour >= 6 && hour < 9) || (hour >= 17 && hour < 19);
+        return (hour >= 6 && hour < 10) || (hour >= 17 && hour < 20);
 
     }
 

@@ -34,24 +34,27 @@ public class TravelTracker implements ScanListener {
     public void chargeAccounts() {
         importDatabase();
         for (Customer customer : customers) {
-            totalJourneysFor(customer);
+           chargeCustomer(customer);
         }
     }
 
 
-    private void totalJourneysFor(Customer customer) {
-        //add journeyEvent in list customerJourneyEvents for a customer
+    private List<JourneyEvent> totalJourneysFor(Customer customer) {
+        //create list customerJourneyEvents and add journeyEvent in it (for a customer)
         List<JourneyEvent> customerJourneyEvents = new ArrayList<JourneyEvent>();
         for (JourneyEvent journeyEvent : eventLog) {
             if (journeyEvent.cardId().equals(customer.cardId())) {
                 customerJourneyEvents.add(journeyEvent);
             }
         }
+        return customerJourneyEvents;
+    }
 
-        //creates a journey for each successful pair of events
+        //creates a journey for each successful pair of events; add it in list journeys
+    private List<Journey> createListOfJourneys(Customer customer) {
         List<Journey> journeys = new ArrayList<Journey>();
         JourneyEvent start = null;
-        for (JourneyEvent event : customerJourneyEvents) {
+        for (JourneyEvent event : totalJourneysFor(customer)) {
             if (event instanceof JourneyStart) {
                 start = event;
             }
@@ -60,27 +63,31 @@ public class TravelTracker implements ScanListener {
                 start = null;
             }
         }
+        return journeys;
+    }
 
-        boolean peak = false;
-        BigDecimal customerTotal = new BigDecimal(0);
-        customerTotal = customerTotal.add(JourneyTypePrices.getInstance().calculateJourneyPrice(journeys));
 
-        //if one of the journeys is true, peak becomes true.
-        for (Journey i : journeys) {
-            if(JourneyTypePrices.getInstance().isPeakJourney(i)){
-                peak = true;
+        private void chargeCustomer(Customer customer) {
+            List<Journey> journeys = createListOfJourneys(customer);
+            boolean peak = false;
+            BigDecimal customerTotal = new BigDecimal(0);
+            customerTotal = customerTotal.add(JourneyTypePrices.getInstance().calculateJourneyPrice(journeys));
+
+            //if one of the journeys is true, peak becomes true.
+            for (Journey i : createListOfJourneys(customer)) {
+                if (JourneyTypePrices.getInstance().isPeakJourney(i)) {
+                    peak = true;
+                }
+            }
+            if ((customerTotal.compareTo(BigDecimal.valueOf(7)) > 0 && !peak)
+                    ||
+                    (customerTotal.compareTo(BigDecimal.valueOf(9)) > 0 && peak)
+                    ) {
+                PaymentsSystem.getInstance().charge(customer, journeys, roundToNearestPenny(JourneyTypePrices.getInstance().calculateDailyCaps(peak)));
+            } else if(customerTotal.compareTo(BigDecimal.valueOf(0)) > 0){
+                PaymentsSystem.getInstance().charge(customer, journeys, roundToNearestPenny(customerTotal));
             }
         }
-        if((customerTotal.compareTo(BigDecimal.valueOf(7)) > 0 && !peak)
-                ||
-                (customerTotal.compareTo(BigDecimal.valueOf(9)) > 0 && peak)
-                ) {
-            PaymentsSystem.getInstance().charge(customer, journeys, roundToNearestPenny(JourneyTypePrices.getInstance().calculateDailyCaps(peak)));
-        } else {
-            PaymentsSystem.getInstance().charge(customer, journeys, roundToNearestPenny(customerTotal));
-        }
-
-}
 
     public BigDecimal roundToNearestPenny(BigDecimal poundsAndPence) {
         return poundsAndPence.setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -107,4 +114,4 @@ public class TravelTracker implements ScanListener {
         }
     }
 
-    }
+}

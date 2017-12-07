@@ -26,10 +26,4 @@ public class JourneyEventTest {
     public void returnsReaderId() {
         assertThat(test.readerId(), is(testReaderId));
     }
-    /*
-    String testTimeString = String.valueOf(testTime); //from long to string
-    String pattern = "yyyy-MM-dd";
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern); //from string to date format
-    String date = simpleDateFormat.format(new Date(testTime));
-    */
 }
