@@ -6,7 +6,7 @@ public abstract class JourneyEvent {
 
     private final UUID cardId;
     private final UUID readerId;
-    public long time; //switched to public for tests, , will only be modified by tests
+    private long time;
 
     public JourneyEvent(UUID cardId, UUID readerId) {
         this.cardId = cardId;
@@ -24,5 +24,5 @@ public abstract class JourneyEvent {
 
     public long time() {
         return time;
-    } //switched to public for tests
+    }
 }

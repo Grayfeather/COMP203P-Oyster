@@ -9,10 +9,10 @@ import java.util.TimeZone;
 
 public class JourneyTypePrices {
 
-    static final BigDecimal OFF_PEAK_LONG_JOURNEY_PRICE = new BigDecimal(2.70);
-    static final BigDecimal OFF_PEAK_SHORT_JOURNEY_PRICE = new BigDecimal(1.60);
-    static final BigDecimal PEAK_LONG_JOURNEY_PRICE = new BigDecimal(3.80);
-    static final BigDecimal PEAK_SHORT_JOURNEY_PRICE = new BigDecimal(2.90);
+    private static final BigDecimal OFF_PEAK_LONG_JOURNEY_PRICE = new BigDecimal(2.70);
+    private static final BigDecimal OFF_PEAK_SHORT_JOURNEY_PRICE = new BigDecimal(1.60);
+    private static final BigDecimal PEAK_LONG_JOURNEY_PRICE = new BigDecimal(3.80);
+    private static final BigDecimal PEAK_SHORT_JOURNEY_PRICE = new BigDecimal(2.90);
     private static JourneyTypePrices instance = new JourneyTypePrices();
     //List<Journey> journeys = new ArrayList<Journey>();
 
@@ -24,7 +24,7 @@ public class JourneyTypePrices {
         return peak(myJourney.startTime()) || peak(myJourney.endTime());
     }
 
-    public boolean peak(Date time) {
+    private boolean peak(Date time) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(time);
         calendar.setTimeZone(TimeZone.getTimeZone("Europe/London"));
@@ -35,10 +35,7 @@ public class JourneyTypePrices {
 
     public boolean isLongJourney(Journey myJourney) {
         int durationInMinutes = myJourney.durationSeconds()/60;
-        if (durationInMinutes >= 25)
-            return true;
-        else
-            return false;
+        return durationInMinutes >= 25;
     }
 
     public BigDecimal calculateJourneyPrice(List<Journey> journeys) {
@@ -61,7 +58,7 @@ public class JourneyTypePrices {
     }
 
     public BigDecimal calculateDailyCaps(boolean peak) {
-        if (peak == true)
+        if (peak)
             return BigDecimal.valueOf(9);
 
         return BigDecimal.valueOf(7);

@@ -71,9 +71,9 @@ public class TravelTracker implements ScanListener {
                 peak = true;
             }
         }
-        if((customerTotal.compareTo(BigDecimal.valueOf(7)) == 1 && peak == false)
+        if((customerTotal.compareTo(BigDecimal.valueOf(7)) > 0 && !peak)
                 ||
-                (customerTotal.compareTo(BigDecimal.valueOf(9)) == 1 && peak == true)
+                (customerTotal.compareTo(BigDecimal.valueOf(9)) > 0 && peak)
                 ) {
             PaymentsSystem.getInstance().charge(customer, journeys, roundToNearestPenny(JourneyTypePrices.getInstance().calculateDailyCaps(peak)));
         } else {
