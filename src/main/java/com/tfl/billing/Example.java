@@ -20,7 +20,7 @@ public class Example {
         bakerStreetReader.touch(myCard);
         minutesPass(1);
         kingsCrossReader.touch(myCard);
-        travelTracker.chargeAccounts();
+        travelTracker.chargeAccounts(true);
     }
     private static void minutesPass(int n) throws InterruptedException {
         Thread.sleep(n * 60 * 1000);

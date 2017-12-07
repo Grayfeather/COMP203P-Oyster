@@ -29,10 +29,15 @@ public class TravelTracker implements ScanListener {
         customers = customerDatabase.getCustomers();
     }
 
+    public void importMockDatabase(CustomerDatabase mock) {
+        customerDatabase = mock;
+        customers = customerDatabase.getCustomers();
+    }
+
     /*add journeyEvent in list customerJourneyEvents for each customer and calculate the total price (for each customer)
     of the journey in customerTotal*/
-    public void chargeAccounts() {
-        importDatabase();
+    public void chargeAccounts(boolean k) {
+        if(k) importDatabase();
         for (Customer customer : customers) {
            chargeCustomer(customer);
         }
@@ -105,7 +110,7 @@ public class TravelTracker implements ScanListener {
             eventLog.add(new JourneyEnd(cardId, readerId));
             currentlyTravelling.remove(cardId);
         } else {
-            if (CustomerDatabase.getInstance().isRegisteredId(cardId)) {
+            if (customerDatabase.isRegisteredId(cardId)) {
                 currentlyTravelling.add(cardId);
                 eventLog.add(new JourneyStart(cardId, readerId));
             } else {
