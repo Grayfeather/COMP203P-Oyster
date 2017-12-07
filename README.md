@@ -1,4 +1,6 @@
 # COMP203P-Oyster
+[![Maintainability](https://api.codeclimate.com/v1/badges/750517f0a519ed156031/maintainability)](https://codeclimate.com/github/Grayfeather/COMP203P-Oyster/maintainability)
+
 COMP203P coursework worth 50% of the total mark of the module. 
 
 Initial unit testing: Tested Journey and JourneyEvent. (public returning methods)
