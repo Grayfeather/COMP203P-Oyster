@@ -7,7 +7,7 @@ Initial unit testing: Tested Journey and JourneyEvent. (public returning methods
 
 Finished testing/slight refactoring: TravelTracker, JourneyTypePrices. 
 
-Team members: Ana-Maria Belciug, Maria Iacobici
+Team members: 16061800, 16083104
 
 ## Tasks/Requirements
 
