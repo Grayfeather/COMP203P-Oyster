@@ -44,17 +44,14 @@ public class JourneyTypePrices {
         TravelTracker travelTracker = new TravelTracker(CustomerDatabase.getInstance());
         BigDecimal journeyPrice = new BigDecimal(0);
         for (Journey journey : journeys) {
-            if(isPeakJourney(journey)){
-                if(isLongJourney(journey))
-                    journeyPrice = PEAK_LONG_JOURNEY_PRICE;
-                else
-                    journeyPrice = PEAK_SHORT_JOURNEY_PRICE;
-            }
-            else if(!isPeakJourney(journey)){
-                if(isLongJourney(journey))
-                    journeyPrice = OFF_PEAK_LONG_JOURNEY_PRICE;
-                else
-                    journeyPrice = OFF_PEAK_SHORT_JOURNEY_PRICE;
+            if(isPeakJourney(journey) && isLongJourney(journey)) {
+                journeyPrice = PEAK_LONG_JOURNEY_PRICE;
+            } else if(isPeakJourney(journey)) {
+                journeyPrice = PEAK_SHORT_JOURNEY_PRICE;
+            } else if(isLongJourney(journey)) {
+                journeyPrice = OFF_PEAK_LONG_JOURNEY_PRICE;
+            } else {
+                journeyPrice = OFF_PEAK_SHORT_JOURNEY_PRICE;
             }
         }
         return travelTracker.roundToNearestPenny(journeyPrice);

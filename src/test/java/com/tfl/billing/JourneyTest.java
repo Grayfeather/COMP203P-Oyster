@@ -73,13 +73,13 @@ public class JourneyTest {
     public void returnsDurationMinutes () throws InterruptedException {
         createJourneyTest(1);
         String minutes = test.durationMinutes();
-        int sep = minutes.indexOf(':');
+        int separator = minutes.indexOf(':');
         int mins = 0;
-        for(int i = 0; i < sep; i ++) {
+        for(int i = 0; i < separator; i ++) {
             mins = mins * 10 + (minutes.charAt(i) - '0');
         }
         int secs = 0;
-        for(int i = sep + 1; i < test.durationMinutes().length(); i ++) {
+        for(int i = separator + 1; i < test.durationMinutes().length(); i ++) {
             secs = secs * 10 + (minutes.charAt(i) - '0');
         }
         assertThat(mins * 60 + secs, is(test.durationSeconds()));
