@@ -68,7 +68,7 @@ public class TravelTracker implements ScanListener {
             customerTotal = customerTotal.add(JourneyTypePrices.getInstance().calculateJourneyPrice(journeys));
 
             //if one of the journeys is true, peak becomes true.
-            for (Journey i : createListOfJourneys(customer)) {
+            for (Journey i : journeys) {
                 if (JourneyTypePrices.getInstance().isPeakJourney(i)) {
                     peak = true;
                 }
