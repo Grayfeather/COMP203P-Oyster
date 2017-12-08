@@ -47,8 +47,9 @@ public class TravelTracker implements ScanListener {
         //creates a journey for each successful pair of events; add it in list journeys
     private List<Journey> createListOfJourneys(Customer customer) {
         List<Journey> journeys = new ArrayList<Journey>();
+        List<JourneyEvent> customerJourneyEvents = totalJourneysFor(customer);
         JourneyEvent start = null;
-        for (JourneyEvent event : totalJourneysFor(customer)) {
+        for (JourneyEvent event : customerJourneyEvents) {
             if (event instanceof JourneyStart) {
                 start = event;
             }
